@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAYLIFE – Visual Test</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* ----- BACKGROUND STYLES ----- */
+    body {
+      font-family: system-ui, sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      transition: background 2s ease;
+    }
+
+    /* Default cosmic gradient */
+    body.cosmic {
+      background: linear-gradient(180deg, #0f1220 0%, #1a1f35 100%);
+    }
+
+    /* Starry sky */
+    body.stars {
+      background: #0f1220;
+      background-image: radial-gradient(2px 2px at 20px 20px, white, transparent),
+                        radial-gradient(1.5px 1.5px at 60px 40px, #ddd, transparent),
+                        radial-gradient(1px 1px at 100px 80px, #999, transparent);
+      background-size: 120px 120px;
+      animation: starsMove 60s linear infinite;
+    }
+
+    @keyframes starsMove {
+      from { background-position: 0 0, 0 0, 0 0; }
+      to { background-position: -5000px 5000px, -2000px 4000px, -1000px 2000px; }
+    }
+
+    /* Moon halo */
+    body.moon {
+      background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, #0f1220 80%);
+    }
+
+    /* Sunrise to night */
+    body.sunrise {
+      background: linear-gradient(180deg, #f8b500 0%, #fceabb 20%, #1a1f35 100%);
+      animation: sunriseShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes sunriseShift {
+      0% { background-position: top; }
+      100% { background-position: bottom; }
+    }
+
+    /* ----- HEADER & LOGO ----- */
+    header {
+      position: relative;
+      margin-top: 60px;
+    }
+
+    h1 {
+      font-size: 3em;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 0 0 10px #00e0ff;
+      z-index: 2;
+      position: relative;
+    }
+
+    .moon {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff 30%, #dcdcdc 60%, #999 100%);
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 50px 10px rgba(255, 255, 255, 0.2);
+      animation: rotateMoon 120s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes rotateMoon {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    /* ----- SLOGAN ----- */
+    .slogan {
+      margin-top: 220px;
+      font-style: italic;
+      color: #ccc;
+      font-size: 1.1em;
+    }
+
+    /* ----- LIFE COUNTER ----- */
+    .counter {
+      margin-top: 50px;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #ddd;
+      margin: 10px 0;
+    }
+
+    label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.4);
+      accent-color: #00e0ff;
+      cursor: pointer;
+    }
+
+    /* ----- PROGRESS BAR ----- */
+    .progress-container {
+      width: 80%;
+      height: 16px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      margin: 30px auto;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #00e0ff, #66ff99);
+      width: 0%;
+      border-radius: 10px;
+      transition: width 1.5s ease, filter 0.5s;
+    }
+
+    .progress-bar.blur {
+      filter: blur(4px) brightness(0.5);
+    }
+
+    /* ----- SELECTOR ----- */
+    .controls {
+      margin-top: 40px;
+    }
+
+    select {
+      background: #00e0ff;
+      color: #0f1220;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body class="cosmic">
+  <header>
+    <div class="moon"></div>
+    <h1>DAYLIFE</h1>
+  </header>
+
+  <p class="slogan">DAYLIFE — take you to the Moon of your life.</p>
+
+  <div class="counter">
+    <p id="livedDays"></p>
+    <label><input type="checkbox" id="hideLived"> Hide lived days</label>
+
+    <p id="remainingDays"></p>
+    <label><input type="checkbox" id="hideRemaining"> Hide remaining days</label>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label for="bgSelector">Background:</label>
+    <select id="bgSelector">
+      <option value="cosmic">🌌 Cosmic Gradient</option>
+      <option value="stars">🌠 Starry Sky</option>
+      <option value="moon">🌗 Moon Halo</option>
+      <option value="sunrise">🌅 Sunrise to Night</option>
+    </select>
+  </div>
+
+  <script>
+    // Data simulation
+    const birthDate = new Date("1979-08-01");
+    const averageLife = 30000;
+    const today = new Date();
+    const livedDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
+    const remainingDays = averageLife - livedDays;
+    const progress = (livedDays / averageLife) * 100;
+
+    // Text display
+    const livedText = document.getElementById("livedDays");
+    const remainingText = document.getElementById("remainingDays");
+    const hideLived = document.getElementById("hideLived");
+    const hideRemaining = document.getElementById("hideRemaining");
+    const progressBar = document.getElementById("progressBar");
+
+    livedText.textContent = `🌅 You have lived ${livedDays.toLocaleString()} days`;
+    remainingText.textContent = `🌕 You may have ${remainingDays.toLocaleString()} days remaining`;
+    progressBar.style.width = progress + "%";
+
+    // Tick boxes
+    hideLived.addEventListener("change", () => {
+      livedText.textContent = hideLived.checked
+        ? "🌅 You have lived ***** days"
+        : `🌅 You have lived ${livedDays.toLocaleString()} days`;
+      progressBar.classList.toggle("blur", hideLived.checked || hideRemaining.checked);
+    });
+
+    hideRemaining.addEventListener("change", () => {
+      remainingText.textContent = hideRemaining.checked
+        ? "🌕 You may have ***** days remaining"
+        : `🌕 You may have ${remainingDays.toLocaleString()} days remaining`;
+      progressBar.classList.toggle("blur", hideLived.checked || hideRemaining.checked);
+    });
+
+    // Background selector
+    const bgSelector = document.getElementById("bgSelector");
+    const body = document.body;
+    const savedBg = localStorage.getItem("daylife-bg");
+
+    if (savedBg) {
+      body.className = savedBg;
+      bgSelector.value = savedBg;
+    }
+
+    bgSelector.addEventListener("change", () => {
+      body.className = bgSelector.value;
+      localStorage.setItem("daylife-bg", bgSelector.value);
+    });
+  </script>
+</body>
+</html>
