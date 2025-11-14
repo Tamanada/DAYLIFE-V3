@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAYLIFE – Home</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(180deg, #0f1220 0%, #1a1f35 100%);
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      color: #00e0ff;
+      margin-bottom: 30px;
+    }
+    p {
+      font-size: 1.2em;
+      color: #ccc;
+      margin: 10px 0;
+    }
+    label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 1em;
+      margin: 5px 0 20px 0;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.4);
+      accent-color: #00e0ff;
+      cursor: pointer;
+    }
+    button {
+      background: #00e0ff;
+      color: #0f1220;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #66ff99;
+    }
+  </style>
+</head>
+<body>
+  <h1>DAYLIFE 🌙</h1>
+
+  <div id="lifeCounter" style="display:none;">
+    <p id="livedDays"></p>
+    <label>
+      <input type="checkbox" id="hideLived"> Hide lived days
+    </label>
+
+    <p id="remainingDays"></p>
+    <label>
+      <input type="checkbox" id="hideRemaining"> Hide remaining days
+    </label>
+  </div>
+
+  <button id="toggleBtn">🔘 Show Life Counter</button>
+
+  <script>
+    lucide.createIcons();
+
+    // --- Configuration par défaut ---
+    const birthDate = new Date("1980-01-01"); // 💡 à remplacer plus tard
+    const averageLife = 30000; // jours de vie estimés
+
+    const today = new Date();
+    const livedDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
+    const remainingDays = averageLife - livedDays;
+
+    const lifeCounter = document.getElementById("lifeCounter");
+    const livedText = document.getElementById("livedDays");
+    const remainingText = document.getElementById("remainingDays");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const hideLived = document.getElementById("hideLived");
+    const hideRemaining = document.getElementById("hideRemaining");
+
+    let visible = false;
+    toggleBtn.addEventListener("click", () => {
+      visible = !visible;
+      lifeCounter.style.display = visible ? "block" : "none";
+      toggleBtn.textContent = visible ? "🔘 Hide Life Counter" : "🔘 Show Life Counter";
+    });
+
+    // Texte initial
+    livedText.textContent = `🌅 You have lived ${livedDays.toLocaleString()} days`;
+    remainingText.textContent = `🌕 You may have ${remainingDays.toLocaleString()} days remaining`;
+
+    // Fonction de masquage / affichage
+    hideLived.addEventListener("change", () => {
+      livedText.textContent = hideLived.checked
+        ? "🌅 You have lived ***** days"
+        : `🌅 You have lived ${livedDays.toLocaleString()} days`;
+    });
+
+    hideRemaining.addEventListener("change", () => {
+      remainingText.textContent = hideRemaining.checked
+        ? "🌕 You may have ***** days remaining"
+        : `🌕 You may have ${remainingDays.toLocaleString()} days remaining`;
+    });
+  </script>
+</body>
+</html>

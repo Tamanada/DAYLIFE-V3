@@ -3,15 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DAYLIFE – Test</title>
-  <link rel="stylesheet" href="./assets/style.css" />
+  <title>DAYLIFE 🌕</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(180deg, #0f1220 0%, #1a1f35 100%);
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      color: #00e0ff;
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #00e0ff;
+      color: #0f1220;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    a:hover {
+      background: #66ff99;
+      color: #0f1220;
+    }
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <h1>DAYLIFE 🚀</h1>
-    <p>Si tu vois cette page sur GitHub Pages, le déploiement fonctionne.</p>
-    <button id="btn">Clique-moi</button>
-  </main>
-  <script src="./assets/app.js"></script>
+  <h1>Welcome to DAYLIFE 🌙</h1>
+  <p>Choose a page to explore:</p>
+
+  <!-- Liens avec icônes Lucide -->
+  <a href="Pages/home.html"><i data-lucide="home"></i> Home</a>
+  <a href="Pages/dreams.html"><i data-lucide="moon"></i> Dreams</a>
+  <a href="Pages/reflections.html"><i data-lucide="mirror"></i> Reflections</a>
+  <a href="Pages/profile.html"><i data-lucide="user"></i> Profile</a>
+
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
